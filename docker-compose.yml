@@ -1,25 +1,28 @@
-version: '3'
+version: '3.8'
 services:
     client:
-        #build: .
-        image: node:latest
-        working_dir: /app
+        build:
+            context: .
+            args: 
+                NPM_TOKEN: ${NPM_TOKEN}
         volumes:
             - ./:/app:z
             - /app/node_modules
             - node-modules:/./node_modules
         tty: true
-        command: bash -c 'npm install && npm run start'
         ports:
             - 3000:3000
+        command: bash -c 'npm run start'
     router:
-        image: node:latest
-        working_dir: /app
+        build:
+            context: .
+            args: 
+                NPM_TOKEN: ${NPM_TOKEN}
         volumes:
             - ./:/app:z
             - /app/node_modules
             - node-modules:/./node_modules
-        command: bash -c 'npm install && node ./service'
+        command: bash -c 'node ./service'
     nginx:
         image: nginx
         volumes:
@@ -27,7 +30,8 @@ services:
         ports:
             - 80:80
         tty: true
-    redis:
-        image: redis:latest
+        container_name: reverse-proxy
+    # redis:
+    #     image: redis:latest
 volumes:
-    node-modules: # share node modules
+    node-modules:

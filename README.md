@@ -31,3 +31,5 @@ Enter in the browser url  if you have configured the local virtual host
 
 ### Reload server
 `docker-compose exec nginx nginx -s reload`
+
+
